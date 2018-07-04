@@ -1,19 +1,8 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'ETG_V1.ui'
-#
-# Created by: PyQt5 UI code generator 5.10.1
-#
-# WARNING! All changes made in this file will be lost!
-import os
-import sys
-
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QMessageBox
 
 from cipher import *
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtGui import QIcon
+
 
 class ETG_Main_Window(QtWidgets.QMainWindow):
     def __init__(self):
@@ -145,14 +134,3 @@ class ETG_Main_Window(QtWidgets.QMainWindow):
         x = cipherADFGX(self.textBox.toPlainText())
         self.textBox.setText("")
         self.textBox.setText(x.decipher())
-
-def main():
-    app = QtWidgets.QApplication(sys.argv)
-    path = os.path.join(os.path.dirname(sys.modules[__name__].__file__), 'icon.png')
-    app.setWindowIcon(QIcon(path))
-    window = ETG_Main_Window()
-    window.show()
-    app.exec_()
-
-if __name__ == '__main__':
-    main()

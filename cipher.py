@@ -1,5 +1,4 @@
 from pycipher import ADFGX
-from pycipher import Enigma
 
 class cipherADFGX():
 
