@@ -41,7 +41,6 @@ class App(QMainWindow):
         self.textbox.setText("")
 
     @pyqtSlot()
-
     def on_click_decipher(self):
         x = cipherADFGX(self.textbox.text())
         QMessageBox.question(self, 'New Message', x.decipher(), QMessageBox.Ok)

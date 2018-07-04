@@ -5,17 +5,26 @@
 # Created by: PyQt5 UI code generator 5.10.1
 #
 # WARNING! All changes made in this file will be lost!
+import os
 import sys
 
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtWidgets import QMessageBox
+
+from cipher import *
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QIcon
 
 class ETG_Main_Window(QtWidgets.QMainWindow):
     def __init__(self):
         super(self.__class__, self).__init__()
         self.setupUi(self)
+        self.encrypt.clicked.connect(self.on_click_encipher)
+        self.decrypt.clicked.connect(self.on_click_decipher)
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(531, 372)
+        MainWindow.resize(920, 650)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout_5 = QtWidgets.QGridLayout(self.centralwidget)
@@ -24,7 +33,7 @@ class ETG_Main_Window(QtWidgets.QMainWindow):
         self.gridLayout_3.setObjectName("gridLayout_3")
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.gridLayout_3.addItem(spacerItem, 0, 4, 1, 1)
-        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.encrypt = QtWidgets.QPushButton(self.centralwidget)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 170, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -35,15 +44,15 @@ class ETG_Main_Window(QtWidgets.QMainWindow):
         brush = QtGui.QBrush(QtGui.QColor(120, 120, 120))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.ButtonText, brush)
-        self.pushButton.setPalette(palette)
+        self.encrypt.setPalette(palette)
         font = QtGui.QFont()
         font.setFamily("OCR A Extended")
         font.setPointSize(14)
         font.setBold(False)
         font.setWeight(50)
-        self.pushButton.setFont(font)
-        self.pushButton.setObjectName("pushButton")
-        self.gridLayout_3.addWidget(self.pushButton, 0, 2, 1, 1)
+        self.encrypt.setFont(font)
+        self.encrypt.setObjectName("encrypt")
+        self.gridLayout_3.addWidget(self.encrypt, 0, 2, 1, 1)
         spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.gridLayout_3.addItem(spacerItem1, 0, 0, 1, 1)
         spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
@@ -51,7 +60,7 @@ class ETG_Main_Window(QtWidgets.QMainWindow):
         self.gridLayout_5.addLayout(self.gridLayout_3, 5, 1, 1, 1)
         self.gridLayout_4 = QtWidgets.QGridLayout()
         self.gridLayout_4.setObjectName("gridLayout_4")
-        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
+        self.decrypt = QtWidgets.QPushButton(self.centralwidget)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 170, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -62,15 +71,15 @@ class ETG_Main_Window(QtWidgets.QMainWindow):
         brush = QtGui.QBrush(QtGui.QColor(120, 120, 120))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.ButtonText, brush)
-        self.pushButton_2.setPalette(palette)
+        self.decrypt.setPalette(palette)
         font = QtGui.QFont()
         font.setFamily("OCR A Extended")
         font.setPointSize(14)
         font.setBold(False)
         font.setWeight(50)
-        self.pushButton_2.setFont(font)
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.gridLayout_4.addWidget(self.pushButton_2, 0, 1, 1, 1)
+        self.decrypt.setFont(font)
+        self.decrypt.setObjectName("decrypt")
+        self.gridLayout_4.addWidget(self.decrypt, 0, 1, 1, 1)
         spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.gridLayout_4.addItem(spacerItem3, 0, 0, 1, 1)
         spacerItem4 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
@@ -83,21 +92,21 @@ class ETG_Main_Window(QtWidgets.QMainWindow):
         self.gridLayout_5.addLayout(self.gridLayout_2, 3, 1, 1, 2)
         spacerItem6 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.gridLayout_5.addItem(spacerItem6, 5, 0, 1, 1)
-        self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
-        self.textEdit.setObjectName("textEdit")
-        self.gridLayout_5.addWidget(self.textEdit, 4, 1, 1, 2)
+        self.textBox = QtWidgets.QTextEdit(self.centralwidget)
+        self.textBox.setObjectName("textBox")
+        self.gridLayout_5.addWidget(self.textBox, 4, 1, 1, 2)
         spacerItem7 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.gridLayout_5.addItem(spacerItem7, 6, 1, 1, 2)
-        self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setObjectName("label_2")
-        self.gridLayout_5.addWidget(self.label_2, 1, 2, 1, 1)
-        self.label = QtWidgets.QLabel(self.centralwidget)
+        self.version = QtWidgets.QLabel(self.centralwidget)
+        self.version.setObjectName("version")
+        self.gridLayout_5.addWidget(self.version, 1, 2, 1, 1)
+        self.Title = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
         font.setFamily("OCR A Extended")
         font.setPointSize(28)
-        self.label.setFont(font)
-        self.label.setObjectName("label")
-        self.gridLayout_5.addWidget(self.label, 1, 1, 1, 1)
+        self.Title.setFont(font)
+        self.Title.setObjectName("Title")
+        self.gridLayout_5.addWidget(self.Title, 1, 1, 1, 1)
         spacerItem8 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.gridLayout_5.addItem(spacerItem8, 5, 3, 1, 1)
         spacerItem9 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -112,21 +121,35 @@ class ETG_Main_Window(QtWidgets.QMainWindow):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton.setText(_translate("MainWindow", "Encrypt"))
-        self.pushButton_2.setText(_translate("MainWindow", "Decrypt"))
-        self.label_2.setText(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.encrypt.setText(_translate("MainWindow", "Encrypt"))
+        self.decrypt.setText(_translate("MainWindow", "Decrypt"))
+        self.version.setText(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'OCR A Extended\'; font-size:20pt; font-style:italic; color:#00aaff;\">version 1.0</span></p></body></html>"))
-        self.label.setText(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.Title.setText(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'OCR A Extended\'; font-size:28pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:36pt; font-weight:600; color:#00aaff;\">EncrypToGo</span></p></body></html>"))
 
+    @pyqtSlot()
+    def on_click_encipher(self):
+        x = cipherADFGX(self.textBox.toPlainText())
+        self.textBox.setText("")
+        self.textBox.setText(x.encipher())
+
+    @pyqtSlot()
+    def on_click_decipher(self):
+        x = cipherADFGX(self.textBox.toPlainText())
+        self.textBox.setText("")
+        self.textBox.setText(x.decipher())
+
 def main():
     app = QtWidgets.QApplication(sys.argv)
+    path = os.path.join(os.path.dirname(sys.modules[__name__].__file__), 'icon.png')
+    app.setWindowIcon(QIcon(path))
     window = ETG_Main_Window()
     window.show()
     app.exec_()
